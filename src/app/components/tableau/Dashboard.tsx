@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
 
+// Mise à jour de l'interface User pour correspondre à Prisma
 interface User {
   id: string;
   name: string | null;
   email: string | null;
   createdAt: string;
+  role: 'USER' | 'MANAGER' | 'ADMIN';  // Récupère les rôles possibles
+  favoriteIds: string[];               // Tableaux des favoris
 }
 
 function Dashboard() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Fetch des utilisateurs depuis l'API
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -27,14 +31,14 @@ function Dashboard() {
     fetchUsers();
   }, []);
 
+  // Suppression d'un utilisateur
   const deleteUser = async (id: string) => {
     try {
-      const response = await fetch('/api/users/delete', {
+      const response = await fetch(`/api/users/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id }),
       });
 
       if (!response.ok) {
@@ -64,6 +68,8 @@ function Dashboard() {
               <th className="py-2">Nom</th>
               <th className="py-2">Email</th>
               <th className="py-2">Date de création</th>
+              <th className="py-2">Rôle</th>
+              <th className="py-2">Favoris</th>
               <th className="py-2">Action</th>
             </tr>
           </thead>
@@ -73,7 +79,11 @@ function Dashboard() {
                 <td className="py-2 border">{user.id}</td>
                 <td className="py-2 border">{user.name || 'N/A'}</td>
                 <td className="py-2 border">{user.email || 'N/A'}</td>
-                <td className="py-2 border">{new Date(user.createdAt).toLocaleString()}</td>
+                <td className="py-2 border">
+                  {new Date(user.createdAt).toLocaleString()}
+                </td>
+                <td className="py-2 border">{user.role}</td>
+                <td className="py-2 border">{user.favoriteIds.length}</td>
                 <td className="py-2 border">
                   <button
                     className="bg-red-500 text-white px-4 py-2 rounded"
