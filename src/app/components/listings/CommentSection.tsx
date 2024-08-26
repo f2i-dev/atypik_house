@@ -1,25 +1,18 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation'; // Importer useRouter pour la navigation
+import { useRouter } from 'next/navigation';
 import axios from 'axios';
-import { SafeUser } from '@/app/types';
+import { SafeUser, SafeComment } from '@/app/types';
 import Avatar from '@/app/components/Avatar';
 import Button from '@/app/components/Button';
 
 interface CommentSectionProps {
   listingId: string;
   currentUser?: SafeUser | null;
-  comments: Comment[];
-  setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
-  user?: SafeUser; // user peut être undefined
-}
-
-interface Comment {
-  id: string;
-  content: string;
-  createdAt: string;
-  user: SafeUser;
+  comments: SafeComment[];
+  setComments: React.Dispatch<React.SetStateAction<SafeComment[]>>;
+  user?: SafeUser;
 }
 
 const CommentSection: React.FC<CommentSectionProps> = ({ 
@@ -27,7 +20,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   currentUser, 
   comments,
   setComments,
-  user // Recevoir user comme prop
+  user 
 }) => {
   const [newComment, setNewComment] = useState('');
   const router = useRouter();
@@ -37,7 +30,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
     if (!currentUser) return;
 
     try {
-      const response = await axios.post('/api/comments', { listingId, content: newComment });
+      const response = await axios.post<SafeComment>('/api/comments', { listingId, content: newComment });
       setComments(prevComments => [...prevComments, response.data]);
       setNewComment('');
     } catch (error) {
@@ -47,7 +40,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
 
   const handleContactClick = () => {
     if (!currentUser) return;
-    router.push(`/messages?6698ca3ed913336b67daa635=${currentUser.id}`);
+    router.push(`/messages?userId=${currentUser.id}`);
   };
 
   return (
@@ -83,15 +76,14 @@ const CommentSection: React.FC<CommentSectionProps> = ({
         </form>
       )}
 
-      {/* Vérification que user est défini avant d'afficher le bouton */}
-      {/* {currentUser && user?.id && currentUser.id !== user.id && ( */}
+      {currentUser && user?.id && currentUser.id !== user.id && (
         <div className="mt-6">
           <Button 
             label="Laissez-moi un message" 
             onClick={handleContactClick} 
           />
         </div>
-      
+      )}
     </div>
   );
 };

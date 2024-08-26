@@ -181,7 +181,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
             listingId={listing.id}
             currentUser={currentUser}
             comments={comments}
-            setComments={setComments}
+            setComments={setComments as React.Dispatch<React.SetStateAction<SafeComment[]>>}
           />
         </div>
       </div>

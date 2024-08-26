@@ -63,7 +63,7 @@ function Dashboard() {
               <th className="py-2">ID</th>
               <th className="py-2">Nom</th>
               <th className="py-2">Email</th>
-              {/* <th className="py-2">Date de création</th> */}
+              <th className="py-2">Date de création</th>
               <th className="py-2">Action</th>
             </tr>
           </thead>
@@ -73,7 +73,7 @@ function Dashboard() {
                 <td className="py-2 border">{user.id}</td>
                 <td className="py-2 border">{user.name || 'N/A'}</td>
                 <td className="py-2 border">{user.email || 'N/A'}</td>
-                {/* <td className="py-2 border">{new Date(user.createdAt).toLocaleString()}</td> */}
+                <td className="py-2 border">{new Date(user.createdAt).toLocaleString()}</td>
                 <td className="py-2 border">
                   <button
                     className="bg-red-500 text-white px-4 py-2 rounded"
@@ -92,4 +92,3 @@ function Dashboard() {
 }
 
 export default Dashboard;
- 

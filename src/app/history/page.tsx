@@ -56,7 +56,16 @@ const ReservationsPage = async () => {
           <div>
             <h2 className="text-2xl font-bold mb-4 text-center">Historique des réservations</h2>
             <HistorysClient
-              reservations={reservationHistory}
+              reservations={reservationHistory.map(reservation => ({
+                ...reservation,
+                createdAt: reservation.createdAt.toISOString(),
+                startDate: reservation.startDate.toISOString(),
+                endDate: reservation.endDate.toISOString(),
+                listing: {
+                  ...reservation.listing,
+                  createdAt: reservation.listing.createdAt.toISOString()
+                }
+              }))}
               currentUser={currentUser}
             />
           </div>

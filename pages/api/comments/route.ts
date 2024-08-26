@@ -17,6 +17,8 @@ export async function POST(request: Request) {
       content,
       listingId,
       userId: currentUser.id,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     },
     include: {
       user: true,

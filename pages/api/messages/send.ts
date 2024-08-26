@@ -14,9 +14,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(401).json({ message: 'Non authentifié' });
   }
 
-  const { receiverId, content } = req.body;
+  const { receiverId, content, chatId } = req.body;
 
-  if (!receiverId || !content) {
+  if (!receiverId || !content || !chatId) {
     return res.status(400).json({ message: 'Paramètres manquants' });
   }
 
@@ -26,6 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         content,
         senderId: session.user.id,
         receiverId,
+        chatId,
       },
     });
 

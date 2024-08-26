@@ -18,7 +18,7 @@ model User {
   updatedAt       DateTime     @updatedAt
   favoriteIds     String[]     @db.ObjectId
   role            Role         @default(USER)
-  
+
   accounts        Account[]
   listings        Listing[]
   reservations    Reservation[]
@@ -47,6 +47,7 @@ model Account {
   id_token          String?  @db.String
   session_state     String?
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
   @@unique([provider, providerAccountId])
 }
 
@@ -87,22 +88,38 @@ model Message {
   content         String
   senderId        String       @db.ObjectId
   receiverId      String       @db.ObjectId
+  chatId          String       @db.ObjectId       // Ajout du champ chatId pour la relation avec Chat
   createdAt       DateTime     @default(now())
-
   isDelivered     Boolean      @default(false)
   isRead          Boolean      @default(false)
-  
+
+  // Relations
+  chat            Chat         @relation(fields: [chatId], references: [id], onDelete: Cascade)
   sender          User         @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
   receiver        User         @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+}
+
+model Chat {
+  id              String       @id @default(auto()) @map("_id") @db.ObjectId
+  userIDs         String[]     // IDs des utilisateurs participant au chat
+  messages        Message[]
+  seenBy          String[]     // IDs des utilisateurs ayant vu le chat
+  lastMessage     String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@index([userIDs])
 }
 
 model Comment {
   id              String       @id @default(auto()) @map("_id") @db.ObjectId
   content         String
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
+  createdAt       String
+  updatedAt       String     
   userId          String       @db.ObjectId
   listingId       String       @db.ObjectId
+
+  // Relations
   user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   listing         Listing      @relation(fields: [listingId], references: [id], onDelete: Cascade)
 }

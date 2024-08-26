@@ -27,8 +27,8 @@ const navLinks = [
     icon: Clock4Icon,
   },
   {
-    link: "/commentaires",
-    label: "Posts",
+    link: "/analytics",
+    label: "Analytics",
     icon: BarChart3Icon,
   },
   {
@@ -74,11 +74,11 @@ function Navbar() {
         onClick={() => setIsExpanded(!isExpanded)}
         className="cursor-pointer absolute -right-3 top-10 rounded-full w-6 h-6 bg-[#0a5c36] md:flex hidden justify-center items-center"
       >
-        <Image src="" alt="Right Arrow" width={8} height={8} />
+        <Image src="/images/right-arrow.svg" alt="Right Arrow" width={8} height={8} />
       </div>
 
       <div className="logo-div flex space-x-4 items-center">
-        <Image src="/images/logo.png" alt="Logo" className="ml-2" width={150} height={150} />
+        <Image src="/images/logo3.png" alt="Logo" className="ml-2" width={150} height={150} />
         <span className={!isExpanded ? "hidden" : "block"}></span>
       </div>
 

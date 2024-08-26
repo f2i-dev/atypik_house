@@ -16,7 +16,7 @@ const Chat: React.FC<ChatProps> = ({ userId }) => {
   return (
     <div className="chat">
       <MessageList userId={userId} key={refresh} />
-      <MessageInput receiverId={userId} onMessageSent={handleRefresh} />
+      <MessageInput receiverId={userId} currentUserId={userId} onMessageSent={handleRefresh} />
     </div>
   );
 };
